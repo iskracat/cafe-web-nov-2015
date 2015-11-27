@@ -5,10 +5,10 @@ library(devtools)
 install_github("twitteR", username="geoffjentry")
 
 require(twitteR)
-api_key <- "DRoNBqwlZz2XzcJy2oybBHBUk"
-api_secret <- "mw3WFrzLVFLMA5LeWOmsY6yB5EQrSeaUfFwcaP2Alw5v0unAxI"
-access_token <- "1585120602-ov5qyNRY3WMrvWPuGnqcYjeeLzb8FUwsjlWefZw"
-access_token_secret <- "2XjXnXziOT0LEpblWY9zG5mxbgKkALf4xbjKoZhKG1mUA"
+api_key <- ""
+api_secret <- ""
+access_token <- ""
+access_token_secret <- ""
 
 setup_twitter_oauth(api_key,api_secret,access_token,access_token_secret)
 rm(api_key)
@@ -107,7 +107,7 @@ getSentimentScore = function(sentences, words.positive, words.negative, .progres
         # Now get the score as total positive sentiment minus the total negatives
         score = sum(pos.matches) - sum(neg.matches)
         return(score)
-    }, 
+    },
     words.positive, words.negative, .progress=.progress )
     # Return a data frame with respective sentence and the score
     return(data.frame(text=sentences, score=scores))
@@ -117,7 +117,7 @@ getSentimentScore = function(sentences, words.positive, words.negative, .progres
 
 MeruResult = getSentimentScore(MeruTweetsCleaned, words.positive, words.negative)
 OlaResult = getSentimentScore(OlaTweetsCleaned, words.positive, words.negative)
-TaxiForSureResult = getSentimentScore(TaxiForSureTweetsCleaned, words.positive, words.negative) 
+TaxiForSureResult = getSentimentScore(TaxiForSureTweetsCleaned, words.positive, words.negative)
 UberResult = getSentimentScore(UberTweetsCleaned, words.positive, words.negative)
 
 
@@ -140,16 +140,16 @@ mean(UberResult$score)
 
 #Let's now move one step further. Instead of using simple matching of opinion
 #lexicon, we'll use something called Naive Bayes to decide on the emotion present
-#in any tweet. 
+#in any tweet.
 install.packages("Rstem", repos = "http://www.omegahat.org/R", type="source")
 require(devtools)
-install_url("http://cran.r-project.org/src/contrib/Archive/sentiment/sentiment_0.2.tar.gz") 
+install_url("http://cran.r-project.org/src/contrib/Archive/sentiment/sentiment_0.2.tar.gz")
 require(sentiment)
 ls("package:sentiment")
 
 library(sentiment)
-# classify_emotion function returns an object of class data frame 
-# with seven columns (anger, disgust, fear, joy, sadness, surprise, 
+# classify_emotion function returns an object of class data frame
+# with seven columns (anger, disgust, fear, joy, sadness, surprise,
 # best_fit) and one row for each document:
 
 MeruTweetsClassEmo = classify_emotion(MeruTweetsCleaned, algorithm="bayes", prior=1.0)
@@ -207,7 +207,7 @@ head(UberTweetsClassPol, 20)
 
 
 
-#We'll now generate consolidated results from the two functions in a data frame 
+#We'll now generate consolidated results from the two functions in a data frame
 #for each cab service for plotting purposes:
 
 # we will fetch polarity category best_fit for our analysis purposes,
@@ -228,7 +228,7 @@ OlaSentimentDataFrame = within(OlaSentimentDataFrame, emotion <- factor(emotion,
 TaxiForSureSentimentDataFrame = within(TaxiForSureSentimentDataFrame, emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
 UberSentimentDataFrame = within(UberSentimentDataFrame, emotion <- factor(emotion, levels=names(sort(table(emotion), decreasing=TRUE))))
 
-install.packages('ggplot2', dep = TRUE) 
+install.packages('ggplot2', dep = TRUE)
 require(ggplot2)
 
 plotSentiments1<- function (sentiment_dataframe,title) {
@@ -320,7 +320,3 @@ getWordCloud(MeruSentimentDataFrame, MeruTweetsCleaned, MeruEmotion)
 getWordCloud(OlaSentimentDataFrame, OlaTweetsCleaned, OlaEmotion)
 getWordCloud(TaxiForSureSentimentDataFrame, TaxiForSureTweetsCleaned, TaxiForSureEmotion)
 getWordCloud(UberSentimentDataFrame, UberTweetsCleaned, UberEmotion)
-
-
-
-
